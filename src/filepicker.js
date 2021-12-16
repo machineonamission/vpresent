@@ -3,32 +3,20 @@ let root = document.documentElement;
 
 // register event listeners related to drag-and-drop file uploading
 
-function noffmpeg() {
-    bootbox.alert({
-        title: "<i class=\"fas fa-exclamation-triangle\"></i> Cannot locate FFmpeg!",
-        closeButton: false,
-        centerVertical: true,
-        message: "You're seeing this error message because ffmpeg and/or ffprobe could not be located. Make sure FFmpeg is installed and that both of these are in PATH (on Windows).",
-        callback: noffmpeg
-    });
-}
 
 function noelectron() {
     bootbox.alert({
         title: "<i class=\"fas fa-exclamation-triangle\"></i> Cannot access electron!",
         closeButton: false,
         centerVertical: true,
-        message: "You're seeing this error message because the renderer process (me) is unable to communicate with Electron's main process. Ensure you're running me using electron, not in browser.",
+        message: "You're seeing this error message because the renderer process (this window) is unable to communicat" +
+            "e with Electron's main process. Ensure you're running this using electron, not in your browser.",
         callback: noelectron
     });
 }
 
 document.addEventListener("DOMContentLoaded", function (event) {
-    if (window.electron) {
-        window.electron.ipcinvoke("ffmpeg-exists").catch(() => {
-            noffmpeg();
-        });
-    } else {
+    if (!window.electron) {
         noelectron();
     }
     dropArea = document.getElementById('dropzone');
@@ -85,36 +73,21 @@ function handleFileUpload(filelist) {
     }
     // filelist.length == 1
     let file = filelist[0];
-    if (!file.type.includes("video")) { // MIME type checking
-        document.querySelector("#error-message").innerHTML = "File must be video!";
-        errorshake();
-        return
-    }
     // set some animations, next validation is done on the main process and can take a couple seconds
     document.querySelector("#upload-icon").innerHTML = "<i class=\"fad fa-spinner-third fa-9x fa-spin\"></i>";
-    document.querySelector("#choose-text").innerHTML = "Checking video...";
+    document.querySelector("#choose-text").innerHTML = "Validating files...";
     document.querySelector("#error-message").innerHTML = "";
     document.querySelector("#dropzone").style.animationDuration = "0.1s";
     // API exposed by preload.js for communicating with the main process. cases where it isnt declared could be in a
     // browser if someone tries to run the source that way or if some error occured.
     if (window.electron) {
         // calls getvideodata() from index.js
-        window.electron.ipcinvoke("check-video-streams", file.path).then((reply) => {
-            // this just returns the whole json containing video data
-            // originally i was gonna display the error depending on which streams the file was missing but im lazy lol
-            // video must have video, audio, and subtitles
-
-            // get list of all codec types in the file
-            const types = reply.streams.map(x => x.codec_type);
-            // check if it has v, a, and s
-            let success = ['video', 'audio', 'subtitle'].every(i => types.includes(i));
-            if (success) {
-                // file is fully validated, send it off to app
-                window.location = `app.html?file=${encodeURIComponent(file.path)}`;
-            } else {
-                document.querySelector("#error-message").innerHTML = "File needs to have video, audio, and subtitles.";
-                errorshake();
-            }
+        window.electron.ipcinvoke("check", file.path).then((reply) => {
+            window.location = `app.html?file=${encodeURIComponent(file.path)}`;
+        }).catch(err => {
+            console.error(err)
+            document.querySelector("#error-message").innerHTML = err.toString();
+            errorshake();
         });
     } else {
         document.querySelector("#error-message").innerHTML = "Unable to access electron.";

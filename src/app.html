@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>App</title>
+
+    <link href="jslibs/bootstrap.min.css" rel="stylesheet">
+    <script src="jslibs/jquery-3.6.0.min.js"></script>
+    <script src="jslibs/bootstrap.bundle.js"></script>
+    <script src="jslibs/bootbox.all.min.js"></script>
+    <script src="jslibs/fontawesome.min.js"></script>
+    <link href="gradients.css" rel="stylesheet">
+
+    <script src="app.js"></script>
+    <link href="main.css" rel="stylesheet">
+</head>
+<body>
+<div id="allcont">
+    <div id="captioncont">
+        <p><i class="fad fa-spinner-third fa-spin"></i> Loading...</p>
+    </div>
+    <div class="container-fluid d-none" id="charcont">
+        <div class="row">
+            <div class="col char bg-danger" data-bs-toggle="tooltip" id="beginning"
+                 title="Jump to 1st video">
+                <i class="fas fa-arrow-alt-to-left"></i>
+            </div>
+            <div class="col char bg-info" data-bs-toggle="tooltip" id="back" title="Jump back a video.">
+                <i class="fas fa-arrow-alt-left"></i>
+            </div>
+            <div class="col char bg-success" data-bs-toggle="tooltip" id="playpause" title="Play/pause video">
+                <i class="fas fa-pause"></i>
+            </div>
+            <div class="col char bg-info" data-bs-toggle="tooltip" id="forward" title="Go to next video">
+                <i class="fas fa-arrow-alt-right"></i>
+            </div>
+            <div class="col char bg-danger" data-bs-toggle="tooltip" id="end"
+                 title="Jump to last video">
+                <i class="fas fa-arrow-alt-to-right"></i>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

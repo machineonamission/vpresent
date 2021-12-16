@@ -141,15 +141,17 @@ body, html, #allcont {
     padding: 10px;
 }
 
-#videocont {
-    height: 50%;
-    display: flex;
-    justify-content: center;
-}
 
 #captioncont, #charcont {
     text-align: center;
     font-size: 36px;
+}
+
+#captioncont {
+    height: 75%
+}
+
+#charcont {
     height: 25%;
 }
 
@@ -231,4 +233,14 @@ a:hover {
 
 #edittext:hover, #reverttext:hover {
     color: #aaa;
+}
+
+html {
+    overflow: hidden;
+}
+
+#error-message {
+    word-break: break-word;
+    max-height: 50vh;
+    overflow-y: auto;
 }

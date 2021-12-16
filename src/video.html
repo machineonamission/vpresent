@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Video</title>
+    <style>
+        #video, html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        html, body {
+            margin: 0;
+            background: black;
+        }
+    </style>
+    <script>
+        window.opener.onclose = window.close
+        window.onmessage = (event) => {
+            console.log(event);
+            switch (event.data.type) {
+                case ("preload"):
+                    document.head.insertAdjacentHTML('beforeend', `<link rel="preload" as="video" href="${event.data.data}">`);
+                    break;
+                case ("src"):
+                    document.getElementById("video").setAttribute("src", event.data.data);
+                    break;
+                case ("playpause"):
+                    let video = document.getElementById("video");
+                    if (video.paused) {
+                        video.play();
+                        video.setAttribute("autoplay", "true")
+                    } else {
+                        video.pause();
+                        video.removeAttribute("autoplay")
+                    }
+                    break;
+            }
+        };
+    </script>
+</head>
+<body>
+<video id="video"></video>
+</body>
+</html>
