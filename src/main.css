@@ -1,0 +1,234 @@
+.hvcenter {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.hvcenterrelative {
+    display: grid;
+    height: 100%;
+    text-align: center;
+    margin: 0;
+}
+
+.hvcenterrelative > * {
+    margin: auto;
+}
+
+.height100 {
+    height: 100%;
+}
+
+:root {
+    --border-dance-color: #fff8;
+}
+
+.borderdance {
+    background-image: linear-gradient(90deg, var(--border-dance-color) 50%, transparent 50%),
+    linear-gradient(90deg, var(--border-dance-color) 50%, transparent 50%),
+    linear-gradient(0deg, var(--border-dance-color) 50%, transparent 50%),
+    linear-gradient(0deg, var(--border-dance-color) 50%, transparent 50%);
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    background-size: 15px 2px, 15px 2px, 2px 15px, 2px 15px;
+    background-position: left top, right bottom, left bottom, right top;
+    animation: border-dance 1s infinite linear;
+    transition: animation-duration 1s ease-in-out;
+}
+
+.highlight.borderdance:not(#dropborder) {
+    animation-duration: 0.2s;
+}
+
+.borderdance-under {
+    background-size: 0, 15px 2px, 0, 0;
+    animation-direction: reverse;
+}
+
+@keyframes border-dance {
+    0% {
+        background-position: left top, right bottom, left bottom, right top;
+    }
+    100% {
+        background-position: left 15px top, right 15px bottom, left bottom 15px, right top 15px;
+    }
+}
+
+@keyframes red-fade {
+    0% {
+        color: var(--bs-red);
+    }
+    100% {
+        color: white;
+    }
+}
+
+@keyframes shakeX {
+    from,
+    to {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        -webkit-transform: translate3d(-10px, 0, 0);
+        transform: translate3d(-10px, 0, 0);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        -webkit-transform: translate3d(10px, 0, 0);
+        transform: translate3d(10px, 0, 0);
+    }
+}
+
+.error-shake {
+    animation: red-fade 0.5s 1 ease-in, shakeX 0.5s 1 ease;
+}
+
+.dance-holder {
+    position: fixed; /* Sit on top of the page content */
+    /*width: 100%; !* Full width (cover the whole page) *!*/
+    /*height: 100%; !* Full height (cover the whole page) *!*/
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+}
+
+.cover {
+    position: fixed; /* Sit on top of the page content */
+    /*width: 100%; !* Full width (cover the whole page) *!*/
+    /*height: 100%; !* Full height (cover the whole page) *!*/
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    cursor: pointer;
+}
+
+video {
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+}
+
+body, html, #allcont {
+    height: 100%;
+    width: 100%;
+}
+
+#videocont, #captioncont, #charcont {
+    width: 100%;
+}
+
+#videocont, #captioncont {
+    padding: 10px;
+}
+
+#videocont {
+    height: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+#captioncont, #charcont {
+    text-align: center;
+    font-size: 36px;
+    height: 25%;
+}
+
+#charcont .row {
+    height: 100%;
+    user-select: none;
+}
+
+.char {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.char:hover {
+    filter: brightness(75%);
+}
+
+
+.char:nth-child(odd) {
+    background: var(--bs-indigo);
+}
+
+.char:nth-child(even) {
+    background: var(--bs-purple);
+}
+
+.char-tooltip {
+    font-size: 24px;
+}
+
+.char-data {
+    font-size: 16px;
+}
+
+.tooltip-inner p {
+    margin-bottom: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #aaa;
+}
+
+#dropborder.highlight {
+    opacity: 1;
+}
+
+#dropborder {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+}
+
+#folderupload {
+    cursor: pointer;
+}
+
+.folderdelete {
+    display: none;
+    cursor: pointer;
+}
+
+.folder:hover .folderdelete {
+    display: inline-block;
+}
+
+.indent {
+    margin-left: 1em;
+}
+
+#edittext, #reverttext {
+    cursor: pointer;
+    font-size: 0.5em;
+}
+
+#edittext:hover, #reverttext:hover {
+    color: #aaa;
+}
