@@ -148,7 +148,8 @@ body, html, #allcont {
 }
 
 #captioncont {
-    height: 70%
+    height: 70%;
+    overflow:auto;
 }
 
 #progress {
