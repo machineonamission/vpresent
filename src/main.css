@@ -148,7 +148,11 @@ body, html, #allcont {
 }
 
 #captioncont {
-    height: 75%
+    height: 70%
+}
+
+#progress {
+    height: 5%;
 }
 
 #charcont {

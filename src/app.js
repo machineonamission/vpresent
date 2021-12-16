@@ -7,28 +7,37 @@ window.electron.ipcinvoke("readjson", jsonurl).then(vdata => {
     console.log(vdata);
     // open video window
     let videowindow = window.open("video.html", "_blank", "autoHideMenuBar=true");
-    // close if child closes (doesnt work?)
-    videowindow.onclose = () => {
-        window.location = "filepicker.html"
-    }
+    window.onmessage = (event) => {
+        console.log(event)
+        if (event.data.ready) { // window has sent us a message, it's ready!
+            // close if child closes (doesnt work?)
+            videowindow.onclose = () => {
+                window.location = "filepicker.html"
+            }
 
-    // "send" videos to other window
-    vdata.forEach(v => {
-        videowindow.postMessage({"type": "preload", "data": v.video})
-    });
+            // "send" videos to other window
+            vdata.forEach(v => {
+                videowindow.postMessage({"type": "preload", "data": v.video})
+            });
+            // set src to first video
+            playvideo();
+        }
+    }
 
     // set up events
     function playvideo() {
         videowindow.postMessage({"type": "src", "data": vdata[currentvideo].video});
-        if('caption' in vdata[currentvideo]) {
+        if ('caption' in vdata[currentvideo]) {
             document.querySelector("#captioncont").innerHTML = vdata[currentvideo].caption;
         } else {
             document.querySelector("#captioncont").innerHTML = vdata[currentvideo].name;
         }
+        document.querySelector("#captioncont").innerHTML +=
+            `<br>Next: ${currentvideo < vdata.length - 1 ? vdata[currentvideo + 1].name : "END"}`
+        document.querySelector("#progressbar").style.width = `${(100 * currentvideo) / (vdata.length - 1)}%`;
     }
 
     $(() => {
-        playvideo();
         document.getElementById("beginning").onclick = () => {
             currentvideo = 0;
             playvideo();
@@ -52,7 +61,11 @@ window.electron.ipcinvoke("readjson", jsonurl).then(vdata => {
         document.getElementById("playpause").onclick = () => {
             videowindow.postMessage({"type": "playpause"})
         }
+        document.getElementById("restart").onclick = () => {
+            videowindow.postMessage({"type": "restart"})
+        }
     })
+
     // reveal buttons
     document.querySelector("#charcont").classList.remove("d-none")
 }).catch(err => {

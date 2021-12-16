@@ -14,32 +14,39 @@
             background: black;
         }
     </style>
-    <script>
-        window.opener.onclose = window.close
-        window.onmessage = (event) => {
-            console.log(event);
-            switch (event.data.type) {
-                case ("preload"):
-                    document.head.insertAdjacentHTML('beforeend', `<link rel="preload" as="video" href="${event.data.data}">`);
-                    break;
-                case ("src"):
-                    document.getElementById("video").setAttribute("src", event.data.data);
-                    break;
-                case ("playpause"):
-                    let video = document.getElementById("video");
-                    if (video.paused) {
-                        video.play();
-                        video.setAttribute("autoplay", "true")
-                    } else {
-                        video.pause();
-                        video.removeAttribute("autoplay")
-                    }
-                    break;
-            }
-        };
-    </script>
+
 </head>
 <body>
 <video id="video"></video>
+<script>
+    let video = document.getElementById("video");
+    window.opener.onclose = window.close
+    window.onmessage = (event) => {
+        console.log(event);
+        switch (event.data.type) {
+            case ("preload"):
+                document.head.insertAdjacentHTML('beforeend', `<link rel="preload" as="video" href="${event.data.data}">`);
+                break;
+            case ("src"):
+                video.setAttribute("src", event.data.data);
+                break;
+            case ("playpause"):
+                if (video.paused) {
+                    video.play();
+                    video.setAttribute("autoplay", "true")
+                } else {
+                    video.pause();
+                    video.removeAttribute("autoplay")
+                }
+                break;
+            case ("restart"):
+                video.pause()
+                video.currentTime = 0;
+                video.play()
+                video.setAttribute("autoplay", "true")
+        }
+    };
+    window.opener.postMessage({"ready":true});
+</script>
 </body>
 </html>
